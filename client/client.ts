@@ -10,7 +10,7 @@ export = Main;
 module Main {
     'use strict';
     var socket = client.connect('http://localhost:' + Connection.port);
-
+    // var socket = client.connect('http://ehdeploy.azurewebsites.net:80');
     var traceClient = new TraceApiClient(socket);
     traceClient.init();
 

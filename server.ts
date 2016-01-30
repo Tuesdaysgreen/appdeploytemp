@@ -1,9 +1,9 @@
-/// <reference path="../typings/main.d.ts" />
+/// <reference path="./typings/main.d.ts" />
 
 import socket = require('socket.io');
-import {Connection} from "../common/constants";
-import {DirApi} from './dirApi';
-import {FileApi} from './fileApi';
+import {Connection} from "./common/constants";
+import {DirApi} from './server/dirApi';
+import {FileApi} from './server/fileApi';
 
 export = Main;
 module Main {

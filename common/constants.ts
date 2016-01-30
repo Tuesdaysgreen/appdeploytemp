@@ -4,6 +4,7 @@ module Main{
     export class Paths{
         public static sBasePath = '/scratch/source';
         public static dBasePath = '/scratch/dest';
+        // public static dBasePath = '/home/site/wwwroot/dest';
     }
 
     export class Connection{
