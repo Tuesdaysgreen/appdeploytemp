@@ -1,9 +1,12 @@
 {
-  "name": "socket-chat-example",
+  "name": "File-Sync",
   "version": "0.0.1",
-  "description": "my first socket.io app",
+  "description": "File Sync",
   "dependencies": {
     "express": "^4.10.2",
     "socket.io": "^1.4.5"
+  },
+  "scripts": {
+    "start": "node ./server/server.js"
   }
 }
