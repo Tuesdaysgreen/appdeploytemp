@@ -1,5 +1,11 @@
 export = Main;
 module Main{
+    'use strict';
+    export class Paths{
+        public static sBasePath = '/scratch/source';
+        public static dBasePath = '/scratch/dest';
+    }
+
     export class Connection{
         public static port = 3000;
     }
@@ -15,5 +21,6 @@ module Main{
 
     export class FileApis{
         public static requestFile = "requestFile";
+        public static sendFile = "sendFile";
     }
 }

@@ -2,7 +2,7 @@
 
 import socket = require('socket.io');
 import {IApi} from '../common/interfaces/iApi';
-import {TraceApis, FileApis} from '../common/constants';
+import {TraceApis, FileApis, Paths} from '../common/constants';
 import {DirApis} from '../common/constants';
 import {IFile} from '../common/interfaces/iFile';
 import {Directory} from '../common/fileSystem/directory';
@@ -14,7 +14,6 @@ module Main{
     'use strict';
 
     export class DirApi implements IApi{
-        private _basePath = '/scratch/dest';
 
         constructor(private _socket : SocketIO.Socket){}
 
@@ -24,10 +23,19 @@ module Main{
 
         private _sendDir(sourceDir : IDirectory) {
 
-            var dir = new Directory(this._basePath, sourceDir.path);
-            dir.readDir(() => {
-                this._compareFiles(sourceDir.files, dir.files);
-            });
+            var dir = new Directory(Paths.dBasePath, sourceDir.path);
+
+            try{
+                // Synchronous because we need a sorted list of files
+                dir.readDirSync();
+            }catch(error){
+                this._socket.emit(
+                    TraceApis.respondTraceInfo,
+                    "Error reading dir " + dir.path + ": " + error.Message);
+                return;
+            }
+
+            this._compareFiles(sourceDir.files, dir.files);
         }
 
         private _compareFiles(sourceFiles: IFile[], destFiles: IFile[]) {
@@ -87,7 +95,16 @@ module Main{
 
         private _requestFile(file : IFile){
             if(file.isDirectory){
-                this._socket.emit(DirApis.requestDir, file);
+                var dir = new Directory(Paths.dBasePath, file.path);
+                dir.create((error) =>{
+                    if (error) {
+                        this._socket.emit(TraceApis.respondTraceInfo,
+                            "Error creating directory " + file.path + ": " + error.message);
+                        return;
+                    }
+
+                    this._socket.emit(DirApis.requestDir, file);
+                });
             }
             else{
                 this._socket.emit(FileApis.requestFile, file);
@@ -103,7 +120,7 @@ module Main{
         private _deleteFile(file : IFile, callback? : () => void){
             this._socket.emit(TraceApis.respondTraceInfo, "Deleting file: " + file.path);
 
-            Directory.deleteFile(this._basePath, file, (error) => {
+            Directory.deleteFile(Paths.dBasePath, file, (error) => {
                 if (error) {
                     this._socket.emit(TraceApis.respondTraceInfo, "error deleting file: " + error.message);
                     return;
@@ -115,20 +132,31 @@ module Main{
             })
         }
 
-        private _handleFileNameAndTypeMatch(sourceFile : IFile, destFile : IFile){
-            if(sourceFile.isDirectory){
-                this._socket.emit(DirApis.requestDir, sourceFile);
+        private _handleFileNameAndTypeMatch(sFile : IFile, dFile : IFile){
+            if(sFile.isDirectory){
+                this._socket.emit(DirApis.requestDir, sFile);
             }
             else{
                 // Turns into a string after it's serialized from the client.
-                sourceFile.modified = new Date(<any>sourceFile.modified);
+                sFile.modified = new Date(<any>sFile.modified);
 
-                if(sourceFile.size !== destFile.size
-                    || sourceFile.modified.getTime() !== destFile.modified.getTime()){
+                if(sFile.size !== dFile.size || !this._timesMatch(sFile.modified, dFile.modified)){
 
-                    this._socket.emit(FileApis.requestFile, sourceFile);
+                    this._socket.emit(FileApis.requestFile, sFile);
                 }
             }
+        }
+
+        // Unfortunately setting the modified timestamp on a file doesn't
+        // save the milliseconds.  So the best we can do here is compare
+        // to seconds
+        private _timesMatch(sDate : Date, dDate : Date) : boolean{
+            return sDate.getFullYear() === dDate.getFullYear()
+                && sDate.getMonth() === dDate.getMonth()
+                && sDate.getDay() === dDate.getDay()
+                && sDate.getHours() === dDate.getHours()
+                && sDate.getMinutes() === dDate.getMinutes()
+                && sDate.getSeconds() === dDate.getSeconds();
         }
     }
 }

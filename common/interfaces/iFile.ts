@@ -7,5 +7,6 @@ module Main{
         size: number;
         modified: Date;
         isDirectory: boolean;
+        content: any;
     }
 }

@@ -3,6 +3,7 @@
 import socket = require('socket.io');
 import {Connection} from "../common/constants";
 import {DirApi} from './dirApi';
+import {FileApi} from './fileApi';
 
 export = Main;
 module Main {
@@ -17,6 +18,9 @@ module Main {
 
         var dirApi = new DirApi(socket);
         dirApi.init();
+
+        var fileApi = new FileApi(socket);
+        fileApi.init();
     });
 
     server.on('disconnect', (listener) =>{

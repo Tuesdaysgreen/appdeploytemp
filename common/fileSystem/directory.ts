@@ -16,36 +16,33 @@ module Main{
             super(basePath, path);
         }
 
-        public readDir(callback : () => void) : void{
-            fs.readdir(this.basePath + this.path, (error: any, fileNames: string[]) => {
+        public readDirSync() : void{
+            var fileNames = fs.readdirSync(this.basePath + this.path);
+            if (!fileNames || fileNames.length === 0) {
+                return;
+            }
 
-                var files: IFile[] = [];
-                if(!fileNames || fileNames.length === 0){
-                    callback();
-                    return;
+            var files: IFile[] = [];
+            fileNames.forEach((fileName: string) => {
+                var stats = fs.statSync(this.basePath + this.path + fileName);
+
+                var fileMeta = <IFile>{
+                    name: fileName,
+                    path: this.path + fileName,
+                    basePath: this.basePath,
+                    size: stats["size"],
+                    modified: stats["mtime"],
+                    isDirectory: stats.isDirectory()
                 }
 
-                fileNames.forEach((fileName: string) => {
-
-                    fs.stat(this.basePath + this.path + fileName, (error, stats: fs.Stats) => {
-                        var fileMeta = <IFile>{
-                            name: fileName,
-                            path: this.path + fileName,
-                            basePath: this.basePath,
-                            size: stats["size"],
-                            modified: stats["mtime"],
-                            isDirectory: stats.isDirectory()
-                        }
-
-                        files.push(fileMeta);
-
-                        if (files.length === fileNames.length) {
-                            this.files = files;
-                            callback();
-                        }
-                    });
-                });
+                files.push(fileMeta);
             });
+
+            this.files = files;
+        }
+
+        public create(callback? : (error : NodeJS.ErrnoException) => void){
+            fs.mkdir(this.basePath + this.path, (error) => callback(error));
         }
 
         public static deleteFile(basePath : string, file: IFile, callback?: (err?: NodeJS.ErrnoException) => void){
