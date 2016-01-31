@@ -5,12 +5,15 @@ import {Connection} from "../common/constants";
 import {TraceApiClient} from './TraceApiClient';
 import {DirApiClient} from './DirApiClient';
 import {FileApiClient} from './FileApiClient';
+import fs = require('fs');
 
 export = Main;
 module Main {
     'use strict';
-    var socket = client.connect('http://localhost:' + Connection.port);
-    // var socket = client.connect('http://ehdeploy.azurewebsites.net:80');
+
+    console.log("connecting to: " + Connection.url);
+    var socket = client.connect(Connection.url);
+
     var traceClient = new TraceApiClient(socket);
     traceClient.init();
 
@@ -20,5 +23,4 @@ module Main {
     var fileClient = new FileApiClient(socket);
     fileClient.init();
 
-    // socket.emit('sendDirMetadata', 'foo');
 }

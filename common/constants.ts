@@ -3,12 +3,14 @@ module Main{
     'use strict';
     export class Paths{
         public static sBasePath = '/scratch/source';
-        public static dBasePath = '/scratch/dest';
-        // public static dBasePath = '/home/site/wwwroot/dest';
+        // public static dBasePath = '/scratch/dest';
+        public static dBasePath = 'd:/home/site/wwwroot/dest';
     }
 
     export class Connection{
         public static port = 3000;
+        // public static url = "http://localhost:" + Connection.port;
+        public static url = 'http://ehdeploy.azurewebsites.net';
     }
 
     export class TraceApis{

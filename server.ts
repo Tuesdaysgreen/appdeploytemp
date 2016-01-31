@@ -1,6 +1,8 @@
 /// <reference path="./typings/main.d.ts" />
 
-import socket = require('socket.io');
+import express = require('express');
+import http = require('http');
+import socketIO = require('socket.io');
 import {Connection} from "./common/constants";
 import {DirApi} from './server/dirApi';
 import {FileApi} from './server/fileApi';
@@ -8,12 +10,19 @@ import {FileApi} from './server/fileApi';
 export = Main;
 module Main {
     'use strict';
+    var app = express();
+    var server = http.createServer(app);
+    var io = socketIO(server);
+    var port = process.env.PORT || Connection.port;
+    server.listen(port, () =>{
+        console.log("Listening on port " + port);
+    });
 
-    var server = socket.listen(Connection.port);
+    // var server = socketIO.listen(Connection.port);
 
-    console.log("listening on " + Connection.port);
+    // console.log("listening on " + Connection.port);
 
-    server.on('connection', function(socket : SocketIO.Socket) {
+    io.on('connection', function(socket : SocketIO.Socket) {
         console.log("connected");
 
         var dirApi = new DirApi(socket);
@@ -23,7 +32,7 @@ module Main {
         fileApi.init();
     });
 
-    server.on('disconnect', (listener) =>{
+    io.on('disconnect', (listener) =>{
         console.log('disconnected');
         return;
     })

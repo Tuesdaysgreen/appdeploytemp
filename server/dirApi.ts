@@ -31,7 +31,7 @@ module Main{
             }catch(error){
                 this._socket.emit(
                     TraceApis.respondTraceInfo,
-                    "Error reading dir " + dir.path + ": " + error.Message);
+                    "Error reading dir " + dir.path + ": " + error);
                 return;
             }
 
