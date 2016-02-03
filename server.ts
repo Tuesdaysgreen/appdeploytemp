@@ -18,10 +18,6 @@ module Main {
         console.log("Listening on port " + port);
     });
 
-    // var server = socketIO.listen(Connection.port);
-
-    // console.log("listening on " + Connection.port);
-
     io.on('connection', function(socket : SocketIO.Socket) {
         console.log("connected");
 

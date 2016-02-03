@@ -3,14 +3,14 @@ module Main{
     'use strict';
     export class Paths{
         public static sBasePath = '/scratch/source';
-        // public static dBasePath = '/scratch/dest';
-        public static dBasePath = 'd:/home/site/wwwroot/dest';
+        public static dBasePath = '/scratch/dest';
+        // public static dBasePath = 'd:/home/site/wwwroot/dest';
     }
 
     export class Connection{
         public static port = 3000;
-        // public static url = "http://localhost:" + Connection.port;
-        public static url = 'http://ehdeploy.azurewebsites.net';
+        public static url = "http://localhost:" + Connection.port;
+        // public static url = 'http://ehdeploy.azurewebsites.net';
     }
 
     export class TraceApis{
@@ -25,5 +25,10 @@ module Main{
     export class FileApis{
         public static requestFile = "requestFile";
         public static sendFile = "sendFile";
+    }
+
+    export class ChangeApis{
+        public static respondDirChange = "respondDirChange";
+        public static respondFileChange = "respondFileChange";
     }
 }

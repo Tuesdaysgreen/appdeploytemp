@@ -7,7 +7,7 @@ import {DirApis} from '../common/constants';
 import {IFile} from '../common/interfaces/iFile';
 import {Directory} from '../common/fileSystem/directory';
 import {IDirectory} from '../common/interfaces/iDirectory';
-
+import {DirFileRequestTracker} from './dirFileRequestTracker';
 
 export=Main;
 module Main{
@@ -18,10 +18,10 @@ module Main{
         constructor(private _socket : SocketIO.Socket){}
 
         init(){
-            this._socket.on(DirApis.sendDir, (data: any) => { this._sendDir(data); });
+            this._socket.on(DirApis.sendDir, (data: any) => { this._sendDirApi(data); });
         }
 
-        private _sendDir(sourceDir : IDirectory) {
+        private _sendDirApi(sourceDir : IDirectory) {
 
             var dir = new Directory(Paths.dBasePath, sourceDir.path);
 
@@ -35,16 +35,17 @@ module Main{
                 return;
             }
 
-            this._compareFiles(sourceDir.files, dir.files);
+            this._compareFiles(sourceDir, sourceDir.files, dir.files);
         }
 
-        private _compareFiles(sourceFiles: IFile[], destFiles: IFile[]) {
-            if (sourceFiles.length === 0 && destFiles.length === 0) {
-                return;
-            }
+        private _compareFiles(sDir : IDirectory, sourceFiles: IFile[], destFiles: IFile[]) {
+            // if (sourceFiles.length === 0 && destFiles.length === 0) {
+            //     return;
+            // }
 
             var s = 0;
             var d = 0;
+            var tracker = new DirFileRequestTracker(this._socket, sDir);
 
             while (s < sourceFiles.length && d < destFiles.length) {
                 var sFile = sourceFiles[s];
@@ -57,12 +58,12 @@ module Main{
                     // Paths match
 
                     if (sFile.isDirectory === dFile.isDirectory) {
-                        this._handleFileNameAndTypeMatch(sourceFiles[s], destFiles[d]);
+                        this._handleFileNameAndTypeMatch(sourceFiles[s], destFiles[d], tracker);
                     }
                     else {
                         // File types don't match.
                         this._deleteFile(dFile, () =>{
-                            this._requestFile(sFile);
+                            this._requestFileOrDir(sFile, tracker);
                         });
                     }
 
@@ -72,7 +73,7 @@ module Main{
                 }
                 else if (sName < dName) {
                     // File only exists on source
-                    this._requestFile(sFile);
+                    this._requestFileOrDir(sFile, tracker);
                     s++;
                 }
                 else{
@@ -84,31 +85,37 @@ module Main{
 
             while(s < sourceFiles.length){
                 // Request remaining files from client
-                this._requestFile(sourceFiles[s++]);
+                this._requestFileOrDir(sourceFiles[s++], tracker);
             }
 
             while(d < destFiles.length){
                 // Delete remaining files on server
                 this._deleteFile(destFiles[d++]);
             }
+
+            tracker.done();
         }
 
-        private _requestFile(file : IFile){
+        private _requestFileOrDir(file : IFile, tracker : DirFileRequestTracker){
             if(file.isDirectory){
-                var dir = new Directory(Paths.dBasePath, file.path);
-                dir.create((error) =>{
-                    if (error) {
-                        this._socket.emit(TraceApis.respondTraceInfo,
-                            "Error creating directory " + file.path + ": " + error.message);
-                        return;
-                    }
 
+                var dir = new Directory(Paths.dBasePath, file.path);
+                try{
+                    dir.createSync();
                     this._socket.emit(DirApis.requestDir, file);
-                });
+                }catch(error){
+                    this._socket.emit(TraceApis.respondTraceInfo,
+                        "Error creating directory " + file.path + ": " + error);
+                }
             }
             else{
-                this._socket.emit(FileApis.requestFile, file);
+                this._requestFile(file, tracker);
             }
+        }
+
+        private _requestFile(file : IFile, tracker : DirFileRequestTracker){
+            tracker.requestFile();
+            this._socket.emit(FileApis.requestFile, file);
         }
 
         private _deleteAllFiles(files : IFile[]){
@@ -132,7 +139,11 @@ module Main{
             })
         }
 
-        private _handleFileNameAndTypeMatch(sFile : IFile, dFile : IFile){
+        private _handleFileNameAndTypeMatch(
+            sFile : IFile,
+            dFile : IFile,
+            tracker : DirFileRequestTracker){
+
             if(sFile.isDirectory){
                 this._socket.emit(DirApis.requestDir, sFile);
             }
@@ -141,8 +152,7 @@ module Main{
                 sFile.modified = new Date(<any>sFile.modified);
 
                 if(sFile.size !== dFile.size || !this._timesMatch(sFile.modified, dFile.modified)){
-
-                    this._socket.emit(FileApis.requestFile, sFile);
+                    this._requestFile(sFile, tracker);
                 }
             }
         }

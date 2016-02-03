@@ -2,12 +2,11 @@
 
 import socket = require('socket.io');
 import {IApi} from '../common/interfaces/iApi';
-import {TraceApis, FileApis, Paths} from '../common/constants';
+import {TraceApis, FileApis, Paths, ChangeApis} from '../common/constants';
 import {DirApis} from '../common/constants';
 import {IFile} from '../common/interfaces/iFile';
-import {Directory} from '../common/fileSystem/directory';
 import {File} from '../common/fileSystem/file';
-import {IDirectory} from '../common/interfaces/iDirectory';
+import {IFileChange} from '../common/interfaces/iFileChange';
 import fs = require('fs');
 
 export = Main;
@@ -35,6 +34,11 @@ module Main {
                     this._socket.emit(
                         TraceApis.respondTraceInfo,
                         "Error saving file " + file.path + ": " + error.message);
+                }
+                else{
+
+                    var change = <IFileChange>{ path: file.path };
+                    this._socket.emit(ChangeApis.respondFileChange, change);
                 }
             });
         }

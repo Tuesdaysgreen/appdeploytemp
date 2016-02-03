@@ -13,22 +13,25 @@ module Main{
         public files: IFile[] = [];
 
         constructor(basePath : string, path : string){
+            // super(basePath, Directory._cleanRootPath(path));
             super(basePath, path);
         }
 
         public readDirSync() : void{
-            var fileNames = fs.readdirSync(this.basePath + this.path);
+            var fileNames = fs.readdirSync(this.fullPath);
             if (!fileNames || fileNames.length === 0) {
                 return;
             }
 
             var files: IFile[] = [];
             fileNames.forEach((fileName: string) => {
-                var stats = fs.statSync(this.basePath + this.path + fileName);
+                var filePath = this.path + fileName;
+                var stats = fs.statSync(this.basePath + filePath);
 
                 var fileMeta = <IFile>{
                     name: fileName,
-                    path: this.path + fileName,
+                    path: stats.isDirectory() ? filePath + "/" : filePath,
+                    fullPath: File.getFullPath(this.basePath, filePath),
                     basePath: this.basePath,
                     size: stats["size"],
                     modified: stats["mtime"],
@@ -41,8 +44,8 @@ module Main{
             this.files = files;
         }
 
-        public create(callback? : (error : NodeJS.ErrnoException) => void){
-            fs.mkdir(this.basePath + this.path, (error) => callback(error));
+        public createSync(){
+            fs.mkdirSync(this.fullPath);
         }
 
         public static deleteFile(basePath : string, file: IFile, callback?: (err?: NodeJS.ErrnoException) => void){

@@ -9,6 +9,7 @@ module Main{
         public name: string;
         public path: string;
         public basePath: string;
+        public fullPath: string;
         public size: number;
         public modified: Date;
         public isDirectory: boolean;
@@ -17,24 +18,32 @@ module Main{
         constructor(basePath: string, path : string){
             this.basePath = basePath;
             this.path = path;
+            this.fullPath = File.getFullPath(basePath, path);
+        }
+
+        public static getFullPath(basePath : string, path : string) : string{
+            if(path === '/'){
+                return basePath;
+            }
+
+            return basePath + path;
         }
 
         public save(callback? : (error : NodeJS.ErrnoException) => void){
-            var fullPath = this.basePath + this.path;
-            fs.exists(fullPath, (exists) =>{
+            fs.exists(this.fullPath, (exists) =>{
                 if (exists) {
-                    fs.unlink(fullPath, (error) => {
+                    fs.unlink(this.fullPath, (error) => {
                         if (error) {
                             callback(error);
                             return;
                         }
 
-                        this._saveHelper(fullPath, (error) => { callback(error) });
+                        this._saveHelper(this.fullPath, (error) => { callback(error) });
                         // fs.writeFile(fullPath, this.content, (error) => { callback(error) });
                     })
                 }
                 else {
-                    this._saveHelper(fullPath, (error) => { callback(error) });
+                    this._saveHelper(this.fullPath, (error) => { callback(error) });
                 }
             })
         }
