@@ -2,6 +2,7 @@
 
 import fs = require('fs');
 import {IFile} from '../interfaces/iFile';
+import {IFSService} from '../interfaces/iFSService';
 
 export = Main;
 module Main{
@@ -15,7 +16,10 @@ module Main{
         public isDirectory: boolean;
         public content: any;
 
-        constructor(basePath: string, path : string){
+        constructor(private _fs : IFSService,
+                            basePath: string,
+                            path : string){
+
             this.basePath = basePath;
             this.path = path;
             this.fullPath = File.getFullPath(basePath, path);
@@ -29,36 +33,9 @@ module Main{
             return basePath + path;
         }
 
-        public save(callback? : (error : NodeJS.ErrnoException) => void){
-            fs.exists(this.fullPath, (exists) =>{
-                if (exists) {
-                    fs.unlink(this.fullPath, (error) => {
-                        if (error) {
-                            callback(error);
-                            return;
-                        }
-
-                        this._saveHelper(this.fullPath, (error) => { callback(error) });
-                        // fs.writeFile(fullPath, this.content, (error) => { callback(error) });
-                    })
-                }
-                else {
-                    this._saveHelper(this.fullPath, (error) => { callback(error) });
-                }
-            })
-        }
-
-        private _saveHelper(fullPath : string, callback : (error : NodeJS.ErrnoException) =>void){
-            fs.writeFile(fullPath, this.content, (error) => {
-                if (!error) {
-
-                    fs.utimes(fullPath, new Date(), this.modified, (error) =>{
-                        callback(error);
-                    })
-                }
-                else {
-                    callback(error);
-                }
+        public save(): Q.Promise<any> {
+            return this._fs.writeFile(this.fullPath, this.content).then(() => {
+                return this._fs.utimes(this.fullPath, new Date(), this.modified);
             });
         }
     }

@@ -1,12 +1,12 @@
-/// <reference path="./typings/main.d.ts" />
+/// <reference path="../typings/main.d.ts" />
 
 import client = require('socket.io-client');
-import {Connection} from "./common/constants";
-import {TraceApiClient} from './client/TraceApiClient';
-import {DirApiClient} from './client/DirApiClient';
-import {FileApiClient} from './client/FileApiClient';
-import {ChangeTracker} from './common/fileSystem/changeTracker';
-import {ChangeApiClient} from './client/changeApiClient';
+import {Connection} from "../common/constants";
+import {TraceApiClient} from './TraceApiClient';
+import {DirApiClient} from './DirApiClient';
+import {FileApiClient} from './FileApiClient';
+import {ChangeTracker} from '../common/fileSystem/changeTracker';
+import {ChangeApiClient} from './changeApiClient';
 import fs = require('fs');
 
 export = Main;

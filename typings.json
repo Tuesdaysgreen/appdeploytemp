@@ -1,8 +1,12 @@
 {
   "ambientDependencies": {
+    "Q": "github:DefinitelyTyped/DefinitelyTyped/q/Q.d.ts#aae1368c8ee377f6e9c59c2d6faf1acb3ece7e05",
+    "assert": "github:DefinitelyTyped/DefinitelyTyped/assert/assert.d.ts#58697597421d259f656dad7a2a5f20140c8a8051",
     "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#dd4626a4e23ce8d6d175e0fe8244a99771c8c3f2",
     "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#cb5206a8ac1c9a3ddfd126f5ecea6729b2361452",
+    "mocha": "github:DefinitelyTyped/DefinitelyTyped/mocha/mocha.d.ts#d6dd320291705694ba8e1a79497a908e9f5e6617",
     "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#0fa4e9e61385646ea6a4cba2aef357353d2ce77f",
+    "sinon": "github:DefinitelyTyped/DefinitelyTyped/sinon/sinon.d.ts#6e7d83167d86d857817bd492786f8304f5c4a0e4",
     "socket.io": "github:DefinitelyTyped/DefinitelyTyped/socket.io/socket.io.d.ts#4128f7af06c355e3526b7cf7cbb85e2e43bff167",
     "socket.io-client": "github:DefinitelyTyped/DefinitelyTyped/socket.io-client/socket.io-client.d.ts#495f2734927a644e913f9ed8f4d7d903f276f41d"
   }

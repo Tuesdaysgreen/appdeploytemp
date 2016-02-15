@@ -5,11 +5,11 @@
 			"name": "Launch",
 			"type": "node",
 			"request": "launch",
-            "program": "./client.js",
-			// "program": "./server.js",
+            // "program": "${workspaceroot}/client/client.js",
+			"program": "${workspaceRoot}/server/server.js",
 			"stopOnEntry": false,
 			"args": [],
-			"cwd": ".",
+			"cwd": "${workspaceRoot}",
 			"runtimeExecutable": null,
 			"runtimeArgs": [
 				"--nolazy"
@@ -21,6 +21,19 @@
 			"sourceMaps": false,
 			"outDir": null
 		},
+        // {
+        //     "request": "launch",
+		// 	"name": "Debug Tests",
+		// 	"type": "node",
+		// 	// Notice, we bypass the launcher and start the test runner directly
+		// 	"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+		// 	"stopOnEntry": true,
+		// 	// run the tests in the tests folder
+		// 	"args": ["${workspaceRoot}\\tests\\test.js"],
+		// 	"cwd": "${workspaceRoot}",
+		// 	"runtimeExecutable": null,
+		// 	"env": { }
+		// },
 		{
 			"name": "Attach",
 			"type": "node",

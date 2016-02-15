@@ -1,11 +1,12 @@
-/// <reference path="./typings/main.d.ts" />
+/// <reference path="../typings/main.d.ts" />
 
 import express = require('express');
 import http = require('http');
 import socketIO = require('socket.io');
-import {Connection} from "./common/constants";
-import {DirApi} from './server/dirApi';
-import {FileApi} from './server/fileApi';
+import {Connection} from "../common/constants";
+import {DirApi} from './dirApi';
+import {FileApi} from './fileApi';
+import {FSService} from '../common/services/fsService'
 
 export = Main;
 module Main {
@@ -18,13 +19,15 @@ module Main {
         console.log("Listening on port " + port);
     });
 
+    var fsService = new FSService();
+
     io.on('connection', function(socket : SocketIO.Socket) {
         console.log("connected");
 
         var dirApi = new DirApi(socket);
         dirApi.init();
 
-        var fileApi = new FileApi(socket);
+        var fileApi = new FileApi(socket, fsService);
         fileApi.init();
     });
 

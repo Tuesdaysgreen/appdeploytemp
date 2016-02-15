@@ -14,7 +14,8 @@ module Main{
 
         constructor(basePath : string, path : string){
             // super(basePath, Directory._cleanRootPath(path));
-            super(basePath, path);
+            super(null, basePath, path);
+            //todo: replace
         }
 
         public readDirSync() : void{
