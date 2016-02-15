@@ -1,9 +1,9 @@
 /// <reference path="../typings/main.d.ts" />
 
 import fs = require('fs');
-import {IFile} from '../common/interfaces/iFile';
+import {IFile} from '../common/models/iFile';
 import {File} from '../common/fileSystem/file';
-import {IFSService} from '../common/interfaces/iFSService';
+import {IFSService} from '../common/services/iFSService';
 import sinon = require('sinon');
 import Q = require('q');
 

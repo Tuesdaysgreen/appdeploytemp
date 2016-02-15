@@ -3,8 +3,8 @@
 import fs = require('fs');
 import socket = require('socket.io');
 import {ChangeApis} from '../common/constants';
-import {IDirChange} from '../common/interfaces/iDirChange';
-import {IDirectory} from '../common/interfaces/iDirectory';
+import {IDirChange} from '../common/models/iDirChange';
+import {IDirectory} from '../common/models/iDirectory';
 export = Main;
 module Main {
     'use strict';

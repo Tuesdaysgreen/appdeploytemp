@@ -3,11 +3,11 @@
 import SocketIOClient = require('socket.io-client');
 import fs = require('fs');
 
-import {IApi} from '../common/interfaces/iApi';
+import {IApi} from '../common/models/iApi';
 import {ChangeTracker} from '../common/fileSystem/changeTracker';
 import {ChangeApis} from '../common/constants';
-import {IDirChange} from '../common/interfaces/iDirChange';
-import {IFileChange} from '../common/interfaces/iFileChange';
+import {IDirChange} from '../common/models/iDirChange';
+import {IFileChange} from '../common/models/iFileChange';
 
 export =Main;
 module Main {

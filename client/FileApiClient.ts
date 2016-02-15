@@ -3,9 +3,9 @@
 import SocketIOClient = require('socket.io-client');
 import fs = require('fs');
 
-import {IApi} from '../common/interfaces/iApi';
+import {IApi} from '../common/models/iApi';
 import {FileApis, Paths} from '../common/constants';
-import {IFile} from '../common/interfaces/iFile';
+import {IFile} from '../common/models/iFile';
 import {Directory} from '../common/fileSystem/Directory';
 
 export =Main;

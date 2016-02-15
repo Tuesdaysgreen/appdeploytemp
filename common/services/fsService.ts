@@ -1,5 +1,5 @@
 /// <reference path="../../typings/main.d.ts" />
-import {IFSService} from '../interfaces/iFSService';
+import {IFSService} from '../services/iFSService';
 import fs = require('fs');
 import Q = require('q');
 

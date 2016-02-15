@@ -2,7 +2,7 @@
 
 import SocketIOClient = require('socket.io-client');
 import {Connection} from "../common/constants";
-import {IApi} from '../common/interfaces/iApi';
+import {IApi} from '../common/models/iApi';
 import {TraceApis} from '../common/constants';
 
 export = Main;

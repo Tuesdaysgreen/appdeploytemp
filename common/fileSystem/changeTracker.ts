@@ -2,8 +2,8 @@
 
 import fs = require('fs');
 import {File} from './File';
-import {IFile} from '../interfaces/iFile';
-import {IDirectory} from '../interfaces/iDirectory';
+import {IFile} from '../models/iFile';
+import {IDirectory} from '../models/iDirectory';
 
 export = Main;
 module Main{

@@ -1,8 +1,8 @@
 /// <reference path="../../typings/main.d.ts" />
 
 import fs = require('fs');
-import {IFile} from '../interfaces/iFile';
-import {IFSService} from '../interfaces/iFSService';
+import {IFile} from '../models/iFile';
+import {IFSService} from '../services/iFSService';
 
 export = Main;
 module Main{

@@ -1,13 +1,13 @@
 /// <reference path="../typings/main.d.ts" />
 
 import socket = require('socket.io');
-import {IApi} from '../common/interfaces/iApi';
+import {IApi} from '../common/models/iApi';
 import {TraceApis, FileApis, Paths, ChangeApis} from '../common/constants';
 import {DirApis} from '../common/constants';
-import {IFile} from '../common/interfaces/iFile';
+import {IFile} from '../common/models/iFile';
 import {File} from '../common/fileSystem/file';
-import {IFileChange} from '../common/interfaces/iFileChange';
-import {IFSService} from '../common/interfaces/iFSService';
+import {IFileChange} from '../common/models/iFileChange';
+import {IFSService} from '../common/services/iFSService';
 
 export = Main;
 module Main {

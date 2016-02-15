@@ -3,10 +3,10 @@
 import SocketIOClient = require('socket.io-client');
 import fs = require('fs');
 
-import {IApi} from '../common/interfaces/iApi';
+import {IApi} from '../common/models/iApi';
 import {DirApis, Paths} from '../common/constants';
-import {IFile} from '../common/interfaces/iFile';
-import {IDirectory} from '../common/interfaces/iDirectory';
+import {IFile} from '../common/models/iFile';
+import {IDirectory} from '../common/models/iDirectory';
 import {Directory} from '../common/fileSystem/Directory';
 import {ChangeTracker} from '../common/fileSystem/changeTracker';
 

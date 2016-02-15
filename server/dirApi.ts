@@ -1,12 +1,12 @@
 /// <reference path="../typings/main.d.ts" />
 
 import socket = require('socket.io');
-import {IApi} from '../common/interfaces/iApi';
+import {IApi} from '../common/models/iApi';
 import {TraceApis, FileApis, Paths} from '../common/constants';
 import {DirApis} from '../common/constants';
-import {IFile} from '../common/interfaces/iFile';
+import {IFile} from '../common/models/iFile';
 import {Directory} from '../common/fileSystem/directory';
-import {IDirectory} from '../common/interfaces/iDirectory';
+import {IDirectory} from '../common/models/iDirectory';
 import {DirFileRequestTracker} from './dirFileRequestTracker';
 
 export=Main;

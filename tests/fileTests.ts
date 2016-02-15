@@ -1,6 +1,6 @@
 /// <reference path="../typings/main.d.ts" />
 import {File} from '../common/fileSystem/file';
-import {IFSService} from '../common/interfaces/iFSService';
+import {IFSService} from '../common/services/iFSService';
 import {FSService} from '../common/services/FSService';
 import {MockFSService} from './MockFSService';
 import sinon = require('sinon');
