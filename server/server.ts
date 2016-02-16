@@ -3,6 +3,7 @@
 import express = require('express');
 import http = require('http');
 import socketIO = require('socket.io');
+import {SocketService} from '../common/services/SocketService';
 import {Connection} from "../common/constants";
 import {DirApi} from './dirApi';
 import {FileApi} from './fileApi';
@@ -24,10 +25,12 @@ module Main {
     io.on('connection', function(socket : SocketIO.Socket) {
         console.log("connected");
 
+        var socketService = new SocketService(socket);
+
         var dirApi = new DirApi(socket);
         dirApi.init();
 
-        var fileApi = new FileApi(socket, fsService);
+        var fileApi = new FileApi(socketService, fsService);
         fileApi.init();
     });
 

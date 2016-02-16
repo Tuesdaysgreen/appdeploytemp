@@ -1,6 +1,7 @@
 /// <reference path="../typings/main.d.ts" />
 
-import socket = require('socket.io');
+// import socket = require('socket.io');
+import {ISocketService} from '../common/services/iSocketService';
 import {IApi} from '../common/models/iApi';
 import {TraceApis, FileApis, Paths, ChangeApis} from '../common/constants';
 import {DirApis} from '../common/constants';
@@ -15,7 +16,7 @@ module Main {
 
     export class FileApi implements IApi {
         constructor(
-            private _socket: SocketIO.Socket,
+            private _socket: ISocketService,
             private _fs : IFSService){}
 
         init(){
@@ -23,7 +24,7 @@ module Main {
         }
 
         private _sendFileApi(sFile : IFile){
-            var path = Paths.dBasePath + sFile.path;
+            // var path = Paths.dBasePath + sFile.path;
             var file = new File(this._fs, Paths.dBasePath, sFile.path);
             file.content = sFile.content;
 
