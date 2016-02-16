@@ -6,12 +6,17 @@ import {MockFSService} from './MockFSService';
 import sinon = require('sinon');
 import Q = require('q');
 import assert = require('assert');
+import Deps = require('ts-dependency-injection');
 
 describe('File operations', function(){
     var fs = new MockFSService();
 
     describe('File Save', function(){
         it('Should write and update timestamp of file', function() {
+            var context = new Deps.Context();
+            context.addValue(new MockFSService);
+            context.resolve();
+
             var modified = new Date(2016, 1, 15);
             var content = "hello world";
             var file = new File(fs, "/dest/", "foo.txt");

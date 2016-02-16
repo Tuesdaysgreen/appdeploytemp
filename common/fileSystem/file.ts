@@ -3,6 +3,8 @@
 import fs = require('fs');
 import {IFile} from '../models/iFile';
 import {IFSService} from '../services/iFSService';
+// import {FSService} from '../services/fsService';
+import Deps = require('ts-dependency-injection');
 
 export = Main;
 module Main{
@@ -24,6 +26,9 @@ module Main{
             this.path = path;
             this.fullPath = File.getFullPath(basePath, path);
         }
+
+        @Deps.Injection(IFSService)
+        public fs2: IFSService;
 
         public static getFullPath(basePath : string, path : string) : string{
             if(path === '/'){
