@@ -3,6 +3,7 @@
 import fs = require('fs');
 import {IFile} from '../models/iFile';
 import {IFSService} from '../services/iFSService';
+import {MockBaseFSService} from '../../tests/mockFSService';
 // import {FSService} from '../services/fsService';
 import Deps = require('ts-dependency-injection');
 
@@ -27,8 +28,8 @@ module Main{
             this.fullPath = File.getFullPath(basePath, path);
         }
 
-        @Deps.Injection(IFSService)
-        public fs2: IFSService;
+        @Deps.Injection(MockBaseFSService)
+        public fs2: MockBaseFSService;
 
         public static getFullPath(basePath : string, path : string) : string{
             if(path === '/'){

@@ -29,7 +29,7 @@
 			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
 			"stopOnEntry": true,
 			// run the tests in the tests folder
-			"args": ["${workspaceRoot}\\tests\\fileApi.test.js"],
+			"args": ["${workspaceRoot}\\tests\\file.test.js"],
 			"cwd": "${workspaceRoot}",
 			"runtimeExecutable": null,
 			"env": { }

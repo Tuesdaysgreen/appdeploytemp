@@ -10,10 +10,21 @@ import Q = require('q');
 export = Main;
 module Main {
 
-    export class MockFSService implements IFSService{
+    export class MockBaseFSService implements IFSService{
+        public writeFile(fullPath: string, data: any): Q.Promise<any> {
+            return null;
+        }
+
+        public utimes(fullPath: string, atime: Date, mtime: Date): Q.Promise<any> {
+            return null;
+        }
+    }
+
+    // export class MockFSService implements IFSService{
+    export class MockFSService extends MockBaseFSService{
         private _files = {};
 
-        constructor(){}
+        constructor() { super();}
 
         public CreateMockFile(fullPath : string) : File{
             var file = this._getEmptyFile(fullPath);
